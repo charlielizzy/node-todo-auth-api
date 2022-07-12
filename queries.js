@@ -3,9 +3,14 @@ const jwt_decode= require("jwt-decode");
 const Pool = require('pg').Pool
 
 const pool = new Pool({  
-  host: 'localhost',
-  database: 'tom-teaches-tech-todo-app',  
-  port: 5432,
+  host: process.env.HEROKU_DB_HOST,
+  database: process.env.HEROKU_DB_NAME,  
+  port: process.env.HEROKU_DB_PORT,
+  user: process.env.HEROKU_DB_USER,
+  password: process.env.HEROKU_DB_PASSWORD,  
+  ssl: {
+    rejectUnauthorized: false,
+  },
 })
 
 const getTodos = async(request, response) => {
