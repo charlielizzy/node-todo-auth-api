@@ -6,20 +6,20 @@ const jwks = require('jwks-rsa');
 const port = 3001
 const db = require('./queries')
 const cors = require('cors');
+const dotenv = require('dotenv');
 
+dotenv.config();
 const jwtCheck = jwt({
   secret: jwks.expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://paddington.eu.auth0.com/.well-known/jwks.json'
+    jwksUri: `${process.env.AUTH_0_ISSUER}/.well-known/jwks.json`
   }),
-  audience: 'https://paddington.eu.auth0.com/api/v2/',
-  issuer: 'https://paddington.eu.auth0.com/',
+  audience: `${process.env.AUTH_0_ISSUER}/api/v2/`,
+  issuer: `${process.env.AUTH_0_ISSUER}/`,
   algorithms: ['RS256']
 });
-
-const fetchUser = (console.log())
 
 app.use(jwtCheck);
 app.use(bodyParser.json())
@@ -34,7 +34,7 @@ app.use(cors({
 }));
 
 
-
+console.log('AUTH_0_ISSUER', process.env.AUTH_0_ISSUER);
 app.get('/', (request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
 })
